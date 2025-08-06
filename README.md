@@ -27,7 +27,7 @@
 | GET    | `/api/recipes/{id}/comments`      | Get all comments for a recipe           |
 
 ### Sample Request and Response
-#### Submit Recipe
+#### Create recipe (POST)
 curl --location '/api/recipes' \
 --header 'api-key: {key}' \
 --form 'file=@"{path-to-image}/chicken.jpg"' \
@@ -44,7 +44,7 @@ Response
 }
 
 ---
-
+#### Search recipe (GET)
 curl --location '/api/recipes?search=chicken' \
 --header 'api-key: {key}'
 
@@ -61,7 +61,7 @@ Response
 ]
 
 ---
-
+#### Submit recipe rating (POST)
 curl --location '/api/recipes/1/ratings' \
 --header 'api-key: {key}'
 --data  '{
@@ -72,6 +72,20 @@ Response
 {
     "averageRating": 5,
     "message": "Rating submitted"
+}
+
+---
+#### Submit recipe comment (POST)
+curl --location '/api/recipes/1/comments' \
+--header 'api-key: {key}'
+--data  '{
+            "UserId": 8c76ec40-a191-40d9-add8-50bfd38e5113
+            "Comment": "This recipe turned out amazing!"
+         }'
+
+Response
+{
+    "message": "Comment submitted"
 }
 
 ---
