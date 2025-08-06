@@ -43,6 +43,8 @@ Response
   "message": "Recipe created successfully"
 }
 
+---
+
 curl --location '/api/recipes?search=chicken' \
 --header 'api-key: {key}'
 
@@ -57,6 +59,8 @@ Response
     "imageUrl": "https://example.com/chicken.jpg"
   }
 ]
+
+---
 
 curl --location '/api/recipes/1/ratings' \
 --header 'api-key: {key}'
