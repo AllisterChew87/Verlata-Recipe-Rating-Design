@@ -1,11 +1,17 @@
 # Recipe Rating Api - Design Document
 
 ## Summary
+- User authentication is managed through AWS cognito, with user ids based on cognito generated UUIDs.
+- API access is currently being authorize by using an API key, but will transition to JWT-based authentication for improved security..
 - All POST operations such as creating a new recipe, submitting a rating, or adding a comment will be stored in MSSQL for relational data integrity.
-- New recipes are currently stored without associating them with a user ID.
-- New recipes and ratings are also indexed in elastic search to support full-text, fuzzy and filtered search capabilities.
-- The ratings endpoint retrieves the previous recipe rating (if any) and recalculates the recipe's average rating accordingly. Individual user ratings are currently not factored in, as the focus is on maintaining an average rating for the recipe.
-- The comment endpoint stores the user id to associate each comment with its recipe, allowing the application to display who posted the comment on the recipe.
+- Currently, new recipes are stored without without being linked to a user.
+- When creating a new recipe, users can upload images, which are optimized before being uploaded to an s3 bucket. A corresponding image url will be generated and stored in the database for retrieval.
+- Images optimization ensures faster loading times and more efficient content delivery.
+- The ratings endpoint retrieves the previous recipe rating (if any) and update the recipe's average rating accordingly. Individual user ratings are not tracked at this time, the focus is on maintaining an average rating for the recipe.
+- The rating submission will be validated to ensure they fall within the allowed range of 1 to 5.
+- The comments endpoint stores the user id to associate each comment with its recipe, allowing the application to display who posted the comment on the recipe. Anonymous comments are not currently supported.
+- New recipes and their rating are also indexed in elastic search to support full-text, fuzzy and filtered search for improved performance and discoverability.
+- The comments endpoint is not indexed in elastic search as it does not require search functionality.
 
 ---
 
@@ -116,16 +122,22 @@ Docker
 ### Cloud Services
 Amazon RDS - MSSQL
 - Managed, secure and scalable SQL Server database service.
+
 Amazon Elastic Search
 - Managed service providing powerful full-text, fuzzy and filtered search capabilities.
+
 Amazon Elastic Kubernetes Service
 - Managed kubernetes service to deploy and run docker containerized application.
+
 Amazon CloudWatch
 - Centralized monitoring and logging service for kubernetes pods and other resources.
+
 Amazon Secrets Manager
 - Managed service to securely store and rotate secrets such as database credentials in the cloud.
+
 Amazon S3
 - Scalable object storage service for static assets such as recipe images.
+
 AWS Cognito
 - User authentication and authorization service to manage sign-up, sign-in, and secure access for external user.
 
